@@ -1,4 +1,4 @@
 canvas-experiments
 ==================
 
-nhoffmann.github.com/canvas-experiments
+https://nhoffmann.github.com/canvas-experiments
