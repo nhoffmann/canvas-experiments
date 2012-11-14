@@ -7,10 +7,6 @@ html, body {
   overflow: hidden;
 }
 
-body {
-  // background: #efefef;
-}
-
 #canvas {
   position: absolute;
   top: 0;
@@ -29,8 +25,8 @@ body {
 }
 
 .controls {
-  background: rgba(255, 255, 255, 0.5);
-  border-bottom: 1px solid #fff;
+  background: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
   label {
     float: left;
   }
