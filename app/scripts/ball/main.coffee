@@ -42,13 +42,13 @@ class BallApp extends AppBase
     @clear()
 
   addBall: (x, y, radius) ->
-    @balls.push(new Ball(x, y, radius, @shadow))
+    @balls.push(new Ball(x, y, radius))
     @redraw()
 
   addRandomBall: ->
-    x = Math.random() * @fullWidth
-    y = Math.random() * @fullHeight
-    radius = Math.random() * @halfWidth
+    x = (Math.random() * @fullWidth + Math.random() * @fullWidth) / 2
+    y = (Math.random() * @fullHeight + Math.random() * @fullHeight) / 2
+    radius = (Math.random() * @halfWidth/2 + Math.random() * @halfWidth/2) /2
     @addBall(x, y, radius)
 
   setScaleFactor: (newScaleFactor) ->

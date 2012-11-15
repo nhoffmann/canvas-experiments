@@ -1,7 +1,5 @@
 class Pie
 
-  animationFrameId: null
-
   draw: (ctx, x, y, radius, initialAngle, pieces) ->
     # TODO every piece has to brings its own arc size
     arcSize = Math.PI * 2 / pieces.length

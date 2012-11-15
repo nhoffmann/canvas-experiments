@@ -18,12 +18,11 @@ jQuery( ->
     app.setPieceCount(value)
   )
 
-  $('#start').on('click', (event) ->
-    app.startRotation()
-  )
-
-  $('#stop').on('click', (event) ->
-    app.stopRotation()
+  $('#toggle').on('click', (event) ->
+    if app.isRotating
+      app.stopRotation()
+    else
+      app.startRotation()
   )
 
   $('#randomizeColors').on('click', (event) ->

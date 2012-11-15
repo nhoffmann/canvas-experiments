@@ -19,31 +19,27 @@
             <div class="container-fluid controls">
                 <div class="row-fluid">
                     <div class="span1">
-                        <h1>Ball</h1>
+                        <label for="scaleFactor">Scale</label>
                     </div>
                     <div class="span11">
-                        <div class="row-fluid">
-                            <div class="span2">
-                                <label for="scaleFactor">Scale Factor</label>
-                            </div>
-                            <div class="span10">
-                                <input id="scaleFactor" type="range" min="0" max="2" step="0.001" value="1">
-                            </div>
-                        </div>
-                        <div class="row-fluid">
-                            <div class="span2">
-                                <button id="addBall" class="btn btn-small">Add Random Ball</button>
-                                <button id="clear" class="btn btn-small">Clear</button>
-                            </div>
-                            <div class="span2">
-                                <button id="toggleShadow" class="btn btn-small">Toggle Shadow</button>
-                            </div>
-                        </div>
+                        <input id="scaleFactor" type="range" min="0" max="2" step="0.001" value="1">
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span1">
+                        <a href="../">back</a>
+                    </div>
+                    <div class="span2">
+                        <button id="clear" class="btn btn-small">Clear</button>
+                        <button id="toggleShadow" class="btn btn-small">Toggle Shadow</button>
+                    </div>
+                    <div class="span2">
+                        <button id="addBall" class="btn btn-small">Add Random Ball</button>
+                    </div>
+                    <div class="span2">
                     </div>
                 </div>
             </div>
-
-            <a href="https://github.com/nhoffmann/canvas-experiments"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
         </div>
 
         <!--[if lt IE 7]>
@@ -57,9 +53,8 @@
         <script type="text/javascript" src="scripts/ball/main.js"></script>
         <script type="text/javascript" src="scripts/ball/ball.js"></script>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            var _gaq=[['_setAccount','UA-25619428-2'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
