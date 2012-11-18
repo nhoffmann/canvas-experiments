@@ -28,10 +28,14 @@ jQuery( ->
   $('#randomizeColors').on('click', (event) ->
     app.shuffleColors()
   )
+
+  $('#partyMode').on('click', (event) ->
+    app.partyMode()
+  )
 )
 
 class PieApp extends AppBase
-  
+
 
   constructor: (canvas) ->
     super(canvas)
@@ -40,7 +44,7 @@ class PieApp extends AppBase
     @pieceColors = window.htmlColors
     @currentAngle = 0
     @pieceCount = 3
-    
+
     @draw()
     @startRotation()
 

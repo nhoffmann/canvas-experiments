@@ -1,14 +1,20 @@
 class Ball
 
+  animations: []
+
   constructor: (x, y, radius) ->
     @x = x
     @y = y
     @radius = radius
+    @speed = 1
     @scaleFactor = 1
     @shadow = false
 
   setScaleFactor: (newScaleFactor) ->
     @scaleFactor = newScaleFactor
+
+  setSpeed: (newSpeed) ->
+    @speed = newSpeed
 
   setShadow: (shadow) ->
     @shadow = shadow
@@ -31,5 +37,17 @@ class Ball
       ctx.shadowOffsetX = scaledRadius / 10
       ctx.shadowOffsetY = scaledRadius / 10
     ctx.fill()
+
+  run: (ctx) ->
+    console.log @animations.length
+    if @animations?
+      animation.run(@, ctx) for animation in @animations
+
+  addAnimation: (animation) ->
+    animation.subject = @
+    @animations.push animation
+
+  clearAnimations: ->
+    @animations = []
 
 window.Ball = Ball

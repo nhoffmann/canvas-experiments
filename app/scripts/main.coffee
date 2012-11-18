@@ -6,6 +6,7 @@ class AppBase
     @ctx = @canvas.getContext("2d")
     
     @setMetrics()
+    @wireControls()
 
   draw: ->
     @redraw()
@@ -21,12 +22,16 @@ class AppBase
     @fullHeight = window.innerHeight
 
     @halfWidth = @fullWidth/2
+    @halfHeight = @fullHeight/2
 
     @diagonal = Math.sqrt(@fullWidth * @fullWidth + @fullHeight * @fullHeight)
 
     @center = {}
     @center.x = @fullWidth/2
     @center.y = @fullHeight/2
+
+  wireControls: ->
+    console.log "Not Implemented Yet"
 
   clear: ->
     # Store the current transformation matrix
