@@ -1,11 +1,11 @@
 app = null
 
 jQuery( ->
-  app = new BallApp($('#canvas')[0])
-  # app.addSingleBall(0, 0, 200)
+  stage = new Stage($('#canvas')[0])
+  app = new BallApp(stage)
 
   $(window).resize(() ->
-    app.redraw()
+    stage.redraw()
   )
 
   $('#scaleFactor').on('change', (event) ->
@@ -22,52 +22,49 @@ jQuery( ->
   )
 
   $('#addBall').on('click', (event) ->
-    app.addRandomBall()
+    app.addRandomBall(Utils.randomIntBayesian(stage.halfWidth))
   )
 )
 
 class BallApp extends AppBase
 
-  constructor: (canvas) ->
-    super(canvas)
+  balls: []
+
+  constructor: (stage) ->
+    super(stage)
 
     @scaleFactor = 1
     @shadow = false
 
-    @balls = []
-    @draw()
-
-  clearCanvas: ->
-    @balls = []
-    @clear()
-
   addBall: (x, y, radius) ->
-    @balls.push(new Ball(x, y, radius))
-    @redraw()
+    ball = new Ball(x, y, radius, @scaleFactor)
+    @stage.addSprite(ball)
+    @balls.push(ball)
+    ball
 
-  addRandomBall: ->
-    x = (Math.random() * @fullWidth + Math.random() * @fullWidth) / 2
-    y = (Math.random() * @fullHeight + Math.random() * @fullHeight) / 2
-    radius = (Math.random() * @halfWidth/2 + Math.random() * @halfWidth/2) /2
+  addRandomBall: (radius) ->
+    x = Utils.randomIntBayesian(@stage.fullWidth)
+    y = Utils.randomIntBayesian(@stage.fullHeight)
     @addBall(x, y, radius)
 
   setScaleFactor: (newScaleFactor) ->
     @scaleFactor = newScaleFactor
-    $.each(@balls, (index, item) =>
-      item.setScaleFactor(@scaleFactor)
-    )
-    @redraw()
+
+    setFactor = (ball) =>
+      ball.scaleFactor = @scaleFactor
+
+    setFactor(ball) for ball in @balls
 
   toggleShadow: ->
     @shadow = not @shadow
-    $.each(@balls, (index, item) =>
-      item.setShadow(@shadow)
-      false
-    )
-    @redraw()
+    setShadow = (ball) =>
+      ball.shadow = @shadow
 
-  drawContent: ->
-    $.each(@balls, (index, item) =>
-      item.draw(@ctx)
-    )
+    setShadow(ball) for ball in @balls
 
+
+  clearCanvas: ->
+    @stage.removeSprite(ball) for ball in @balls
+    @balls = []
+
+window.BallApp = BallApp

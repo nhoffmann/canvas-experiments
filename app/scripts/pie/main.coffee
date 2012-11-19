@@ -1,11 +1,11 @@
 app = null
 
 jQuery( ->
-  console.log "Loading application"
-  app = new PieApp($('#canvas')[0])
+  stage = new Stage($('#canvas')[0])
+  app = new PieApp(stage)
 
   $(window).resize(() ->
-    app.redraw()
+    stage.redraw()
   )
 
   $('#speed').on('change', (event) ->
@@ -28,54 +28,73 @@ jQuery( ->
   $('#randomizeColors').on('click', (event) ->
     app.shuffleColors()
   )
+
+  $('#partyMode').on('click', (event) ->
+    app.partyMode()
+  )
+
 )
 
 class PieApp extends AppBase
-  
 
-  constructor: (canvas) ->
-    super(canvas)
+  defaultSpeed: 0.001
 
-    @pie = new Pie()
-    @pieceColors = window.htmlColors
-    @currentAngle = 0
-    @pieceCount = 3
-    
-    @draw()
+  constructor: (stage) ->
+    super(stage)
+
+    @pie = new Pie(@stage.center.x, @stage.center.y, @stage.diagonal, 6, 0)
+    @stage.addSprite(@pie)
+
+    @shuffleColors()
     @startRotation()
 
   setRotationSpeed: (newSpeed) ->
-    @rotationSpeed = 0.001 * newSpeed
+    @rotationSpeed = @defaultSpeed * newSpeed
 
   setPieceCount: (newCount) ->
-    @pieceCount = (Number) newCount
-    @redraw()
+    @pie.pieceCount = ((Number) newCount )
 
   shuffleColors: ->
-    swap  = (input, x,  y) -> [input[x], input[y]] = [input[y], input[x]]
-    rand  = (x) -> Math.floor(Math.random() * x)
-    durst = (input) -> swap(input, i, rand(i)) for i in [input.length - 1 .. 1]
-    durst(@pieceColors)
-    @redraw()
+    @pie.shuffleColors()
+
+  partyMode: ->
+    @setRotationSpeed(500)
+    @partytime()
+
+  partytime: ->
+    @stage.runloop.addEvent(new TimedRuntimeEvent(@, (() =>
+      @randomizeProperties()
+      @partytime()
+    ), Utils.randomInt(40)))
+
+  randomizeProperties: ->
+    threshold = Utils.randomInt(4)
+
+    if threshold > 0
+      @setPieceCount(Utils.randomIntFromRange(5, 20))
+    if threshold > 1
+      @shuffleColors()
+    if threshold > 2
+      @setRotationSpeed(Utils.randomIntFromRange(-500, -400))
+
 
   startRotation: ->
     unless @isRotating
-      @animationFrameId = window.requestAnimationFrame(@animate)
+      @rotation = new AnimationEvent(@, () =>
+        @pie.currentAngle += if @rotationSpeed then @rotationSpeed else @defaultSpeed
+      )
+      @stage.runloop.addEvent(@rotation)
       @isRotating = true
 
-  animate: ->
-    app.currentAngle += if app.rotationSpeed then app.rotationSpeed else 0.001
-    app.redraw()
-
-    app.animationFrameId = window.requestAnimationFrame(app.animate)
 
   stopRotation: ->
     if @isRotating
-      window.cancelAnimationFrame(@animationFrameId)
+      @stage.runloop.removeEvent(@rotation)
       @isRotating = false
 
   drawContent: ->
     pieces = @pieceColors[0..@pieceCount]
     @pie.draw(@ctx, @center.x, @center.y, @diagonal, @currentAngle, pieces)
+
 
 window.PieApp = PieApp

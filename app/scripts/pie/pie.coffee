@@ -1,43 +1,40 @@
-class Pie
+class Pie extends Sprite
 
-  draw: (ctx, x, y, radius, initialAngle, pieces) ->
+  constructor: (x, y, radius, pieceCount, startAngle) ->
+    super(x, y)
+    @radius = radius
+    @pieceCount = pieceCount
+    @initialAngle = startAngle
+    @currentAngle = @initialAngle
+    @pieces = window.htmlColors
+
+  shuffleColors: ->
+    Utils.shuffleArray(@pieces)
+
+  draw: (ctx) ->
+    #console.log "Drawing pie"
     # TODO every piece has to brings its own arc size
-    arcSize = Math.PI * 2 / pieces.length
-    
-    startAngle = initialAngle
-    endAngle = arcSize + initialAngle
+    arcSize = Math.PI * 2 / @pieceCount
 
-    $.each(pieces, (index, item) =>
-      
-      pieceOfCake = new PieceOfCake(item, x, y, radius, startAngle, endAngle)
-      pieceOfCake.draw(ctx)
-      
+    startAngle = @currentAngle
+    endAngle = arcSize + @currentAngle
+
+    drawPiece = (piece) =>
+      ctx.save()
+
+      ctx.fillStyle = piece
+      ctx.beginPath()
+
+      ctx.moveTo(@x, @y)
+      ctx.arc(@x, @y, @radius, startAngle, endAngle, false)
+      ctx.closePath()
+      ctx.fill()
+      ctx.restore()
+
       startAngle += arcSize
       endAngle += arcSize
-    )
+
+    drawPiece(piece) for piece in @pieces[0 .. @pieceCount]
 
 window.Pie = Pie
 
-class PieceOfCake
-
-  constructor: (piece, x, y, radius, startAngle, endAngle)->
-    @piece = piece
-    @x = x
-    @y = y
-    @radius = radius
-    @startAngle = startAngle
-    @endAngle = endAngle
-
-  draw: (ctx) ->
-    ctx.save()
-
-    ctx.fillStyle = @piece
-    ctx.beginPath()
-
-    ctx.moveTo(@x, @y)
-    ctx.arc(@x, @y, @radius, @startAngle, @endAngle, false)
-    ctx.closePath()
-    ctx.fill()
-    ctx.restore()
-
-window.PieceOfCake = PieceOfCake
